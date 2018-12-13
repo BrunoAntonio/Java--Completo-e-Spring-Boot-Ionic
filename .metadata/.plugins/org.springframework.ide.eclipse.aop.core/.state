@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="04springBootBackEnd"/>
+<aop-project name="03springBootCaseStudy"/>
+<aop-project name="02jpaSpringBoot"/>
+</aop-reference-model>

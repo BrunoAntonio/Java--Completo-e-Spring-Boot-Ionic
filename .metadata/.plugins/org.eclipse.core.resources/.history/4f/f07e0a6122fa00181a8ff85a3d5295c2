@@ -1,0 +1,14 @@
+package com.bruno.springboot.security;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager,AuthenticationEntryPoint authenticationEntryPoint, JWTUtil jwtUtil) {
+		super(authenticationManager, authenticationEntryPoint);
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,13 @@
+package com.bruno.springboot.services;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.bruno.springboot.security.UserSS;
+
+public class UserService {
+
+	//metodo para retornar o user que está logado
+	public static UserSS authenticated(){
+		return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+}

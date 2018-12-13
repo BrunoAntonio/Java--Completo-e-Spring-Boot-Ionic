@@ -1,0 +1,5 @@
+package com.bruno.springboot.services;
+
+public class UserService {
+
+}

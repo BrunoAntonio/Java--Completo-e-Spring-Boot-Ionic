@@ -1,0 +1,25 @@
+package com.bruno.springboot.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bruno.springboot.domain.Cliente;
+import com.bruno.springboot.repositories.ClienteRepository;
+import com.bruno.springboot.services.exceptions.ObjectNotFoundException;
+
+@Service
+public class AuthService {
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	public void sendNewPassword(String email) {
+		Cliente cliente = clienteRepository.findByEmail(email);
+		if (cliente ==null) {
+			throw new ObjectNotFoundException("Email não encontrado");
+		}
+		
+		
+	}
+
+}

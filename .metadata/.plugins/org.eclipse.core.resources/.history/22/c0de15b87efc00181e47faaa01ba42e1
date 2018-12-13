@@ -1,0 +1,15 @@
+#definir perfil activo
+spring.profiles.active=test
+
+
+
+
+#remetente e destinatario padrao dos emails enviados
+default.sender=brunocabanascardoso@gmail.com
+default.recipient=brunocabanascardoso@gmail.com
+
+
+jwt.secret=SequenciaDeCaracteresParaAssinarToken
+
+#tempo de expiração do token=1minuto, o ideal é entre 24h a 1semana
+jwt.expiration=60000 

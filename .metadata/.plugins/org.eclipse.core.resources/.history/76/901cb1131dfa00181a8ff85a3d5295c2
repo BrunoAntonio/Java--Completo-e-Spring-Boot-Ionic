@@ -1,0 +1,91 @@
+package com.bruno.springboot.config;
+
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.bruno.springboot.security.JWTAuthenticationFilter;
+import com.bruno.springboot.security.JWTUtil;
+
+//https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JWTUtil jwtUtil;
+
+	@Autowired
+	private Environment env; // para permitir acesso a base de dados h2
+
+	// vector com caminhos sem restrição de acesso, publicos
+	// localhost:8080/h2-console/ - permitido
+	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**",
+
+	};
+
+	// vector com caminhos sem restrição de acesso, onde apenas se pode ver os
+	// dados(não se pode alterar)
+	// http://localhost:8080/produtos?categorias=1 -acesso permitido
+	// localhost:8080/clientes/1-acesso negado
+	private static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**", "/clientes/**", };
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+			http.headers().frameOptions().disable(); // se o perfil de teste, que contem a base de dados h2,estiver
+														// activo permitir acesso
+		}
+
+		http.cors().and().csrf().disable(); // http.cors()-Se houver um metodo CorsConfigurationSource definido as suas
+											// configurações são aplicadas. csrf().disable()porque é uma protecção
+											// contra ataques a sistemas que armazenam a autenticação na sessão e este
+											// sistema não armazena a sessão
+		http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()// Apenas permite o metodo
+																								// get no vector
+																								// PUBLIC_MATCHERS_GET
+				.antMatchers(PUBLIC_MATCHERS).permitAll() // todos os caminhos que estão no vector PUBLIC_MATCHERS não
+															// necessitam autenticação
+				.anyRequest().authenticated(); // todo o resto tem de ter autenticação
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil);
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// this disables session
+																						// creation on Spring Security
+	}
+
+	@Override//metodo para autenticacao informand o user e a pass
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	}
+
+	@Bean // permisão aos endpoints por multiplas fontes com as configurações basicas
+	CorsConfigurationSource corsConfigurationSource() {
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		return source;
+	}
+
+	@Bean // encriptar a senha
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+}

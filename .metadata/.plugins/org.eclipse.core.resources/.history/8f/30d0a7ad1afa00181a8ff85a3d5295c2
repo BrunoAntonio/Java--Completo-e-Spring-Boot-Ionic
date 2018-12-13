@@ -1,0 +1,10 @@
+package com.bruno.springboot.security;
+
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+//UsernamePasswordAuthenticationFilter classe do spring
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+
+	
+	
+}

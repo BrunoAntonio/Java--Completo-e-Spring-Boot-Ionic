@@ -1,0 +1,5 @@
+package com.bruno.springboot.dto;
+
+public class EmailDTO {
+
+}

@@ -1,0 +1,14 @@
+package com.bruno.springboot.config;
+
+import org.springframework.context.annotation.Configuration;
+
+import com.amazonaws.services.s3.AmazonS3;
+
+@Configuration
+public class S3Config {
+	
+	public AmazonS3 s3Client() {
+		
+	}
+
+}

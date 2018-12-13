@@ -1,0 +1,17 @@
+package com.bruno.springboot.services;
+
+import org.springframework.stereotype.Service;
+
+import com.bruno.springboot.repositories.ClienteRepository;
+
+@Service
+public class AuthService {
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	public void sendNewPassword(String email) {
+		
+	}
+
+}
